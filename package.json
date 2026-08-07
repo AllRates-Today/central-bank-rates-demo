@@ -1,0 +1,50 @@
+{
+  "name": "central-bank-rates-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sample website that pulls official exchange rates from 34 central banks using the AllRatesToday per-bank npm SDKs, and renders a static dashboard.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "bank-indonesia-exchange-rate": "^1.0.0",
+    "bank-of-israel-exchange-rate": "^1.0.0",
+    "bcb-exchange-rate": "^1.0.0",
+    "bcra-exchange-rate": "^1.0.0",
+    "bcrp-exchange-rate": "^1.0.0",
+    "bnb-exchange-rate": "^1.0.0",
+    "bnm-exchange-rate": "^1.0.0",
+    "bnr-exchange-rate": "^1.0.0",
+    "boc-exchange-rate": "^1.0.0",
+    "boe-exchange-rate": "^1.0.0",
+    "boj-exchange-rate": "^1.0.0",
+    "bok-exchange-rate": "^1.0.0",
+    "cbar-exchange-rate": "^1.0.0",
+    "cbb-exchange-rate": "^1.0.0",
+    "cbbh-exchange-rate": "^1.0.0",
+    "cbk-exchange-rate": "^1.0.0",
+    "cbn-exchange-rate": "^1.0.0",
+    "cbr-exchange-rate": "^1.0.0",
+    "cbsl-exchange-rate": "^1.0.0",
+    "czech-national-bank-exchange-rate": "^1.0.0",
+    "ecb-exchange-rate": "^1.0.0",
+    "fed-exchange-rate": "^1.0.0",
+    "hkma-exchange-rate": "^1.0.0",
+    "nbp-exchange-rate": "^1.0.0",
+    "nbu-exchange-rate": "^1.0.0",
+    "norges-bank-exchange-rate": "^1.0.0",
+    "pboc-exchange-rate": "^1.0.0",
+    "rba-exchange-rate": "^1.0.0",
+    "rbi-exchange-rate": "^1.0.0",
+    "rbnz-exchange-rate": "^1.0.0",
+    "riksbank-exchange-rate": "^1.0.0",
+    "sarb-exchange-rate": "^1.0.0",
+    "snb-exchange-rate": "^1.0.0",
+    "tcmb-exchange-rate": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
