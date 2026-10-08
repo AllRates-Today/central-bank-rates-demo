@@ -163,6 +163,8 @@ Common API statuses: `401` missing or invalid key · `429` rate limit or monthly
 - **Pricing:** [allratestoday.com/pricing](https://allratestoday.com/pricing/)
 - **Status:** [allratestoday.com/status](https://allratestoday.com/status)
 - **Support:** [allratestoday.com/contact](https://allratestoday.com/contact)
+- **AI agents:** Claude Code plugin `/plugin marketplace add AllRates-Today/claude-code-plugin` · hosted MCP endpoint `https://allratestoday.com/api/mcp` (keyless)
+
 
 ## 📜 License
 
