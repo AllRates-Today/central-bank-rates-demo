@@ -18,16 +18,16 @@ These are the bank-published reference rates used for tax, customs, audit and co
 
 - 🏦 **34 central banks, 34 npm packages** — every card on the page is produced by a different SDK; the import *is* the demo
 - 📦 **Zero-dependency SDKs** — each `*-exchange-rate` package is a thin `fetch` wrapper over the API, no transitive deps
-- 🗓️ **Daily rebuild** — a scheduled GitHub Actions workflow regenerates and redeploys the page every day at 06:30 UTC
+- 🗓️ **Daily rebuild** — a scheduled GitHub Actions workflow regenerates and redeploys the page daily, scheduled 06:30 UTC (GitHub may delay)
 - 🔒 **Key never shipped** — the API key is read from an Actions secret at build time and never appears in the repo or the published HTML
 - 🪶 **One static file** — the build writes a single `dist/index.html` with inline CSS, dark-mode support and a client-side bank filter
 - 🧯 **Fault tolerant** — a bank whose fetch fails renders an error card instead of breaking the build; the build only aborts if *every* fetch fails
 
 ## 🔑 Get your API key
 
-The build needs an AllRatesToday API key in `ALLRATES_API_KEY`. Every per-bank endpoint requires one — there is no keyless mode.
+The build needs an AllRatesToday API key in `ALLRATES_API_KEY`: the per-bank SDKs used here require one. (Outside the SDKs, every bank's latest table is also available keyless at `https://allratestoday.com/api/open/central-bank/{bank}`, e.g. `/api/open/central-bank/ecb`.)
 
-Get a free key (300 requests/month, no credit card) at [allratestoday.com/register](https://allratestoday.com/register).
+Get a free key (300 requests total, lifetime; no credit card) at [allratestoday.com/register](https://allratestoday.com/register).
 
 For the deployed site the key lives in a repository secret named `ALLRATES_API_KEY`, injected into the build step by [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). Forks must add their own secret under **Settings → Secrets and variables → Actions** before the workflow will succeed.
 
@@ -59,7 +59,7 @@ Missing the key exits with code 1 and a pointer to the register page. Every fetc
 
 ## 🔄 How the daily rebuild works
 
-[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) has three triggers: push to `main`, `workflow_dispatch`, and `schedule` at cron `30 6 * * *` — daily at 06:30 UTC, after most banks publish their morning tables.
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) has three triggers: push to `main`, `workflow_dispatch`, and `schedule` at cron `30 6 * * *` — scheduled daily at 06:30 UTC (GitHub may delay), after most banks publish their morning tables.
 
 | Stage | What happens |
 |---|---|
@@ -68,7 +68,7 @@ Missing the key exits with code 1 and a pointer to the register page. Every fetc
 | Concurrency | Grouped on `pages` with `cancel-in-progress: true`, so a push during a scheduled run supersedes it |
 | Permissions | `contents: read`, `pages: write`, `id-token: write` |
 
-Central banks publish once per business day, so building statically once a day costs 34 API calls total. That is the pattern worth copying: cache the daily table, don't call the API per page view.
+Central banks publish once per business day, so building statically once a day costs 34 API calls per build (so a free key's 300 lifetime requests cover about eight builds; a deployment that rebuilds daily needs a paid plan). That is the pattern worth copying: cache the daily table, don't call the API per page view.
 
 ## 📚 SDK reference
 
