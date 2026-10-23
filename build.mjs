@@ -190,7 +190,7 @@ h1{font-size:1.7rem;margin:0 0 .3rem}
 ${results.map(bankCard).join('\n')}
   </div>
   <p class="pagefoot">Source on <a href="https://github.com/AllRates-Today/central-bank-rates-demo">GitHub</a> —
-  rebuilds daily via GitHub Actions. Get your own free API key (300 req/month) at
+  rebuilds daily via GitHub Actions. Get your own free API key at
   <a href="https://allratestoday.com/register">allratestoday.com/register</a>.</p>
 </div>
 <script>

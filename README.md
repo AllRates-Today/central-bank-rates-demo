@@ -27,7 +27,7 @@ These are the bank-published reference rates used for tax, customs, audit and co
 
 The build needs an AllRatesToday API key in `ALLRATES_API_KEY`: the per-bank SDKs used here require one. (Outside the SDKs, every bank's latest table is also available keyless at `https://allratestoday.com/api/open/central-bank/{bank}`, e.g. `/api/open/central-bank/ecb`.)
 
-Get a free key (300 requests total, lifetime; no credit card) at [allratestoday.com/register](https://allratestoday.com/register).
+Get a free key (no credit card) at [allratestoday.com/register](https://allratestoday.com/register).
 
 For the deployed site the key lives in a repository secret named `ALLRATES_API_KEY`, injected into the build step by [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). Forks must add their own secret under **Settings → Secrets and variables → Actions** before the workflow will succeed.
 
@@ -68,7 +68,7 @@ Missing the key exits with code 1 and a pointer to the register page. Every fetc
 | Concurrency | Grouped on `pages` with `cancel-in-progress: true`, so a push during a scheduled run supersedes it |
 | Permissions | `contents: read`, `pages: write`, `id-token: write` |
 
-Central banks publish once per business day, so building statically once a day costs 34 API calls per build (so a free key's 300 lifetime requests cover about eight builds; a deployment that rebuilds daily needs a paid plan). That is the pattern worth copying: cache the daily table, don't call the API per page view.
+Central banks publish once per business day, so building statically once a day costs 34 API calls per build (a deployment that rebuilds daily needs a paid plan). That is the pattern worth copying: cache the daily table, don't call the API per page view.
 
 ## 📚 SDK reference
 
