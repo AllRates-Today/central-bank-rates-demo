@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compare central bank official exchange rates · AllRatesToday demos</title>
+<meta name="description" content="Same currency pair as published by RBI, Fed, ECB, BoE, BoJ and PBoC today, from the keyless central-bank endpoint.">
+<link rel="canonical" href="https://allrates-today.github.io/central-bank-rates-demo/demos/central-banks/">
+<style>
+body{margin:0;padding:32px 16px;background:#f8fafc;color:#0f172a;font:16px/1.5 system-ui,sans-serif}
+.wrap{max-width:560px;margin:auto}
+h1{margin:0 0 4px;font-size:22px}.sub{margin:0 0 16px;color:#475569;font-size:14px}
+select{font:inherit;padding:6px 10px;border-radius:8px;border:1px solid #cbd5e1}
+table{width:100%;margin-top:16px;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px #0002}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #e2e8f0}
+th{background:#f1f5f9;font-size:13px;color:#475569}
+td:last-child{font-variant-numeric:tabular-nums;font-weight:600}
+.attr{margin-top:14px;font-size:12px;color:#64748b}.attr a{color:#0369a1}
+.muted{color:#94a3b8}
+
+.demonav{position:fixed;top:8px;left:12px;font:13px system-ui,sans-serif;opacity:.8}
+.demonav a{color:inherit}
+</style>
+</head>
+<body>
+<p class="demonav"><a href="../">← All demos</a> · <a href="https://github.com/AllRates-Today/central-bank-rates-demo/tree/main/demos/central-banks">Source</a></p>
+<div class="wrap">
+  <h1>One pair, many official rates</h1>
+  <p class="sub">The same currency pair as published by different central banks today. Keyless, CORS-enabled.</p>
+  <label>Pair <select id="pair">
+    <option value="USD/INR" data-banks="rbi,fed">USD/INR</option>
+    <option value="EUR/USD" data-banks="ecb,fed,boe,rbi">EUR/USD</option>
+    <option value="USD/JPY" data-banks="boj,fed,ecb">USD/JPY</option>
+    <option value="GBP/USD" data-banks="boe,fed,ecb">GBP/USD</option>
+    <option value="USD/CNY" data-banks="pboc,ecb,fed">USD/CNY</option>
+  </select></label>
+  <table><thead><tr><th>Bank</th><th>Date</th><th>Rate</th></tr></thead><tbody id="rows"></tbody></table>
+  <p class="attr">Official rates by <a href="https://allratestoday.com/central-bank-rates-api/">AllRatesToday</a> · 120+ central banks</p>
+</div>
+
+<script>
+// Each bank publishes its own table; we look up the pair in every one.
+// Endpoint: https://allratestoday.com/api/open/central-bank/{bank}
+const NAMES = { rbi: "Reserve Bank of India", fed: "Federal Reserve", ecb: "European Central Bank", boe: "Bank of England", boj: "Bank of Japan", pboc: "People's Bank of China" };
+
+function find(d, base, quote) {
+  const direct = d.rates.find((r) => r.base === base && r.quote === quote);
+  if (direct) return direct.value;
+  const inv = d.rates.find((r) => r.base === quote && r.quote === base);
+  if (inv) return 1 / inv.value;
+  // Cross via the bank's home currency: shared base (USD/x, USD/y) or shared quote (x/INR, y/INR).
+  const a = d.rates.find((r) => r.quote === base), b = d.rates.find((r) => r.quote === quote && r.base === a?.base);
+  if (a && b) return b.value / a.value;
+  const c = d.rates.find((r) => r.base === base), e = d.rates.find((r) => r.base === quote && r.quote === c?.quote);
+  return c && e ? c.value / e.value : null;
+}
+
+async function load() {
+  const opt = document.querySelector("#pair option:checked");
+  const [base, quote] = opt.value.split("/");
+  const banks = opt.dataset.banks.split(",");
+  const rows = document.getElementById("rows");
+  rows.innerHTML = banks.map((b) => `<tr><td>${NAMES[b]}</td><td class="muted">…</td><td class="muted">…</td></tr>`).join("");
+  await Promise.all(banks.map(async (b, i) => {
+    const d = await fetch(`https://allratestoday.com/api/open/central-bank/${b}`).then((r) => r.json());
+    const v = find(d, base, quote);
+    rows.rows[i].cells[1].textContent = d.rate_date;
+    rows.rows[i].cells[2].textContent = v ? v.toFixed(4) : "not published";
+  }));
+}
+document.getElementById("pair").addEventListener("change", load);
+load();
+
+</script>
+</body>
+</html>

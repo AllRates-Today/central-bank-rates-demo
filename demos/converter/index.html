@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Currency converter with a free keyless exchange rate API · AllRatesToday demos</title>
+<meta name="description" content="Vanilla JS converter on ECB reference rates from the AllRatesToday open API. No API key, CORS enabled.">
+<link rel="canonical" href="https://allrates-today.github.io/central-bank-rates-demo/demos/converter/">
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0f172a;font:16px/1.5 system-ui,sans-serif;color:#e2e8f0}
+.card{width:min(440px,92vw);padding:28px;border-radius:16px;background:#1e293b;box-shadow:0 20px 60px #0008}
+h1{margin:0 0 4px;font-size:22px}
+.sub{margin:0 0 18px;color:#94a3b8;font-size:14px}
+form{display:grid;grid-template-columns:1fr 90px 36px 90px;gap:8px}
+input,select,button{font:inherit;border:1px solid #334155;border-radius:8px;background:#0f172a;color:inherit;padding:8px}
+button{cursor:pointer}
+.out{margin:18px 0 6px;font-size:26px;font-weight:600}
+.attr{margin:0;font-size:12px;color:#94a3b8}
+.attr a{color:#7dd3fc}
+
+.demonav{position:fixed;top:8px;left:12px;font:13px system-ui,sans-serif;opacity:.8}
+.demonav a{color:inherit}
+</style>
+</head>
+<body>
+<p class="demonav"><a href="../">← All demos</a> · <a href="https://github.com/AllRates-Today/central-bank-rates-demo/tree/main/demos/converter">Source</a></p>
+<div class="card">
+  <h1>Currency converter</h1>
+  <p class="sub">Live European Central Bank reference rates, no API key.</p>
+  <form id="f">
+    <input id="amt" type="number" value="100" min="0" step="any" aria-label="Amount">
+    <select id="from" aria-label="From"></select>
+    <button type="button" id="swap" title="Swap">⇄</button>
+    <select id="to" aria-label="To"></select>
+  </form>
+  <p id="out" class="out">Loading rates…</p>
+  <p class="attr">Exchange rates by <a href="https://allratestoday.com">AllRatesToday</a> · <span id="date"></span></p>
+</div>
+
+<script>
+// Keyless endpoint: ECB reference rates, updated daily.
+// Docs: https://allratestoday.com/open-api/
+const API = "https://allratestoday.com/api/open/latest/EUR";
+const $ = (id) => document.getElementById(id);
+let rates = {};
+
+async function load() {
+  const r = await fetch(API);
+  const d = await r.json();
+  rates = d.rates;
+  $("date").textContent = `ECB ${d.date}`;
+  const codes = Object.keys(rates).sort();
+  for (const sel of [$("from"), $("to")]) {
+    sel.innerHTML = codes.map((c) => `<option>${c}</option>`).join("");
+  }
+  $("from").value = "USD";
+  $("to").value = "EUR";
+  render();
+}
+
+function render() {
+  const amt = parseFloat($("amt").value) || 0;
+  const from = $("from").value, to = $("to").value;
+  // Every rate is quoted against EUR, so cross via EUR.
+  const value = (amt / rates[from]) * rates[to];
+  $("out").textContent = `${amt.toLocaleString()} ${from} = ${value.toLocaleString(undefined, { maximumFractionDigits: 4 })} ${to}`;
+}
+
+$("f").addEventListener("input", render);
+$("swap").addEventListener("click", () => {
+  [$("from").value, $("to").value] = [$("to").value, $("from").value];
+  render();
+});
+load().catch(() => ($("out").textContent = "Could not load rates."));
+
+</script>
+</body>
+</html>

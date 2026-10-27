@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Exchange rate API demos · AllRatesToday</title>
+<meta name="description" content="Three small front-end demos built on the free keyless AllRatesToday exchange rate API: a converter, a CSS FX ticker, and a central-bank rate comparison. View source, copy freely.">
+<link rel="canonical" href="https://allrates-today.github.io/central-bank-rates-demo/demos/">
+<style>
+body{margin:0;padding:40px 16px;background:#f8fafc;color:#0f172a;font:16px/1.6 system-ui,sans-serif}
+main{max-width:620px;margin:auto}h1{font-size:24px;margin:0 0 6px}
+.sub{color:#475569;margin:0 0 20px}ul{padding:0;list-style:none}
+li{background:#fff;border-radius:12px;padding:14px 16px;margin:10px 0;box-shadow:0 1px 3px #0002}
+li a{font-weight:600;color:#0369a1}small{color:#475569}
+.foot{font-size:13px;color:#64748b;margin-top:24px}.foot a{color:#0369a1}
+pre{background:#0f172a;color:#e2e8f0;padding:12px;border-radius:8px;font-size:13px;overflow:auto}
+</style>
+</head>
+<body><main>
+<h1>Exchange rate API demos</h1>
+<p class="sub">Plain HTML, CSS and JavaScript. Each page is one file; view source and copy it. Rates come from the keyless endpoints, no API key needed.</p>
+<ul><li><a href="converter/">Currency converter with a free keyless exchange rate API</a><br><small>Vanilla JS converter on ECB reference rates from the AllRatesToday open API. No API key, CORS enabled.</small></li><li><a href="ticker/">CSS marquee FX ticker fed by a free exchange rate API</a><br><small>Pure-CSS scrolling ticker; the rates come from one keyless fetch to allratestoday.com.</small></li><li><a href="central-banks/">Compare central bank official exchange rates</a><br><small>Same currency pair as published by RBI, Fed, ECB, BoE, BoJ and PBoC today, from the keyless central-bank endpoint.</small></li></ul>
+<p>The endpoints used:</p>
+<pre>GET https://allratestoday.com/api/open/latest/USD
+GET https://allratestoday.com/api/open/central-bank/rbi</pre>
+<p class="foot">Keyless use needs a visible link: <a href="https://allratestoday.com">Exchange rates by AllRatesToday</a>.
+Docs at <a href="https://allratestoday.com/open-api/">allratestoday.com/open-api</a> ·
+<a href="../">Back to the central bank dashboard</a></p>
+</main></body></html>

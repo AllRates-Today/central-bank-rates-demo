@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CSS marquee FX ticker fed by a free exchange rate API · AllRatesToday demos</title>
+<meta name="description" content="Pure-CSS scrolling ticker; the rates come from one keyless fetch to allratestoday.com.">
+<link rel="canonical" href="https://allrates-today.github.io/central-bank-rates-demo/demos/ticker/">
+<style>
+body{margin:0;background:#111;color:#eee;font:15px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace}
+.wrap{padding:40px 0}
+h1,.sub,.attr{margin:0 0 8px 24px}
+.sub,.attr{color:#999;font-size:13px}
+.attr a{color:#6cf}
+.ticker{overflow:hidden;border-top:1px solid #333;border-bottom:1px solid #333;margin:20px 0;white-space:nowrap}
+.ticker ul{display:inline-flex;gap:40px;margin:0;padding:14px 0;list-style:none;animation:scroll 40s linear infinite}
+.ticker:hover ul{animation-play-state:paused}
+.ticker li b{color:#6cf;margin-right:6px}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.ticker ul{animation:none;flex-wrap:wrap;white-space:normal}}
+
+.demonav{position:fixed;top:8px;left:12px;font:13px system-ui,sans-serif;opacity:.8}
+.demonav a{color:inherit}
+</style>
+</head>
+<body>
+<p class="demonav"><a href="../">← All demos</a> · <a href="https://github.com/AllRates-Today/central-bank-rates-demo/tree/main/demos/ticker">Source</a></p>
+<div class="wrap">
+  <h1>Live FX ticker</h1>
+  <p class="sub">Pure CSS marquee fed by a keyless JSON endpoint.</p>
+  <div class="ticker"><ul id="t"></ul></div>
+  <p class="attr">Exchange rates by <a href="https://allratestoday.com">AllRatesToday</a> (ECB reference rates)</p>
+</div>
+
+<script>
+// Base currency to display pairs against. Try GBP, JPY, INR, CHF…
+const BASE = "USD";
+const SHOW = ["EUR", "GBP", "JPY", "CHF", "CAD", "AUD", "CNY", "INR", "BRL", "ZAR", "KRW", "MXN"];
+
+fetch(`https://allratestoday.com/api/open/latest/${BASE}`)
+  .then((r) => r.json())
+  .then((d) => {
+    const items = SHOW.filter((c) => d.rates[c]).map(
+      (c) => `<li><b>${BASE}/${c}</b>${d.rates[c].toFixed(4)}</li>`
+    );
+    // Duplicate the list so the -50% translate loops seamlessly.
+    document.getElementById("t").innerHTML = items.join("") + items.join("");
+  });
+
+</script>
+</body>
+</html>

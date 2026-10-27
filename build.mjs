@@ -1,6 +1,6 @@
 // Build a static dashboard from all 34 central-bank npm SDKs.
 // Requires ALLRATES_API_KEY in the environment — get one at https://allratestoday.com/register
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile, cp } from 'node:fs/promises';
 import { BANKS } from './banks.mjs';
 
 const apiKey = process.env.ALLRATES_API_KEY;
@@ -189,6 +189,7 @@ h1{font-size:1.7rem;margin:0 0 .3rem}
   <div class="grid">
 ${results.map(bankCard).join('\n')}
   </div>
+  <p class="pagefoot">More: <a href="demos/">front-end demos</a> (converter, FX ticker, central-bank comparison) built on the keyless endpoints.</p>
   <p class="pagefoot">Source on <a href="https://github.com/AllRates-Today/central-bank-rates-demo">GitHub</a> —
   rebuilds daily via GitHub Actions. Get your own free API key at
   <a href="https://allratestoday.com/register">allratestoday.com/register</a>.</p>
@@ -207,4 +208,5 @@ input.addEventListener('input',()=>{
 
 await mkdir('dist', { recursive: true });
 await writeFile('dist/index.html', html);
+await cp('demos', 'dist/demos', { recursive: true });
 console.log(`Wrote dist/index.html (${ok.length} banks, ${totalPairs} pairs).`);
