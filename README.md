@@ -158,6 +158,7 @@ Common API statuses: `401` missing or invalid key · `429` rate limit or monthly
 - **Live demo:** [allrates-today.github.io/central-bank-rates-demo](https://allrates-today.github.io/central-bank-rates-demo/)
 - **Front-end demos:** [converter, FX ticker, central-bank comparison](https://allrates-today.github.io/central-bank-rates-demo/demos/) — plain HTML/CSS/JS on the keyless endpoints, source in [`demos/`](demos/)
 - **Central Bank Rates API:** [allratestoday.com/central-bank-rates-api](https://allratestoday.com/central-bank-rates-api/)
+- **Download central bank rates:** [allratestoday.com/download-central-bank-rates](https://allratestoday.com/download-central-bank-rates/) — every bank's tables as Excel, CSV or JSON
 - **Website:** [allratestoday.com](https://allratestoday.com)
 - **API docs:** [allratestoday.com/docs](https://allratestoday.com/docs)
 - **Free API key:** [allratestoday.com/register](https://allratestoday.com/register)
