@@ -165,6 +165,7 @@ Common API statuses: `401` missing or invalid key · `429` rate limit or monthly
 - **Pricing:** [allratestoday.com/pricing](https://allratestoday.com/pricing/)
 - **Status:** [allratestoday.com/status](https://allratestoday.com/status)
 - **Postman:** [allratestoday.com/postman](https://allratestoday.com/postman/)
+- [ChatGPT app](https://chatgpt.com/plugins/plugin_asdk_app_6ae1e76098f48191a285ac3f5ab7a83b) — ask ChatGPT for live and official central bank rates
 - **Support:** [allratestoday.com/contact](https://allratestoday.com/contact)
 - **AI agents:** Claude Code plugin `/plugin marketplace add AllRates-Today/claude-code-plugin` · hosted MCP endpoint `https://allratestoday.com/api/mcp` (keyless)
 - **New in Oct 2026:** agents can self-issue a trial key — `POST https://allratestoday.com/api/agent/keys` (JSON) → 100 calls / 7 days — and read the keyless [Daily Reference Rate](https://allratestoday.com/reference-rate/) (16:00 London fix) at `https://allratestoday.com/api/open/reference-rate`
